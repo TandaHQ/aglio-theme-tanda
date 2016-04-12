@@ -1,6 +1,6 @@
 {
   "name": "aglio-theme-tanda",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tanda theme for the Aglio API Blueprint renderer",
   "main": "lib/main.js",
   "scripts": {
