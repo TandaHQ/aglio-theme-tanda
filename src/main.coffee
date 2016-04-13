@@ -337,9 +337,31 @@ decorate = (api, md, slugCache, verbose) ->
   if verbose
     console.log "Known data structures: #{Object.keys(dataStructures)}"
 
+  findListsAndRender = (content) ->
+    finalHtml = ''
+    for section in content.split '# STARTLIST'
+      for section2 in section.split '# ENDLIST'
+        finalHtml += md.render section2
+        slugCache._nav.push ['ENDLIST']
+      slugCache._nav.pop()
+      slugCache._nav.push ['STARTLIST']
+    slugCache._nav.pop()
+    finalHtml
+
   # API overview description
   if api.description
-    api.descriptionHtml = md.render api.description
+    content_sections = api.description.split '# LHSCONTENT'
+    api.descriptionHtml = []
+    slugCache._nav = []
+
+    api.descriptionHtml.push([findListsAndRender content_sections[0]])
+
+    for section in content_sections.slice 1
+      do ->
+        sides = section.split '# RHSCONTENT'
+        [sides[1], rest] = sides[1].split '# ENDCONTENT'
+        api.descriptionHtml.push [findListsAndRender(sides[0]), findListsAndRender(sides[1])]
+        api.descriptionHtml.push [findListsAndRender rest]
     api.navItems = slugCache._nav
     slugCache._nav = []
 
