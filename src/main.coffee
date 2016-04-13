@@ -360,7 +360,8 @@ decorate = (api, md, slugCache, verbose) ->
       do ->
         sides = section.split '# RHSCONTENT'
         [sides[1], rest] = sides[1].split '# ENDCONTENT'
-        api.descriptionHtml.push [findListsAndRender(sides[0]), findListsAndRender(sides[1])]
+        sidesContent = (findListsAndRender(side) for side in sides)
+        api.descriptionHtml.push sidesContent
         api.descriptionHtml.push [findListsAndRender rest]
     api.navItems = slugCache._nav
     slugCache._nav = []
