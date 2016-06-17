@@ -46,6 +46,9 @@ function getWindowDimensions() {
 function toggleCollapseButton(event) {
     var button = event.target.parentNode;
     var content = button.parentNode.nextSibling;
+    if (!content.children) {
+      content = content.nextSibling;
+    }
     var inner = content.children[0];
 
     if (button.className.indexOf('collapse-button') === -1) {
